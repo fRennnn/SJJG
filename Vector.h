@@ -29,12 +29,12 @@ Vector(int c = DEFAULT_CAPACITY,int s = 0; T v = 0)
 }
 Vector(T const* A ,Rank n){copyFrom(A,0,n);}
 Vector(T const* A,Rank lo,Rank hi){copyFrom(A,lo,hi);}
-Vector(Vector<T> const& V){copyFrom(V._elem,0,V._size);}//ÏòÁ¿ÕûÌå¸´ÖÆ
+Vector(Vector<T> const& V){copyFrom(V._elem,0,V._size);}//å‘é‡æ•´ä½“å¤åˆ¶
 Vector(Vector<T> const& V,Rank lo,Rank hi){copyFrom(V._elem,lo,hi);}
 
 ~Vector(){delete [] _elem;}
 
-//Ö»¶Á·ÃÎÊ½Ó¿Ú
+//åªè¯»è®¿é—®æ¥å£
 Rank size() const {return _size;}
 bool empty() const{return !_size;}
 int disordered() const;
@@ -44,9 +44,9 @@ Rank search(T const& e) const
 {return (0>= _size)? -1 : search(e,0,_size);}
 Rank search(T const& e,Rank lo,Rank hi) const;
 
-//¿ÉĞ´·ÃÎÊ½Ó¿Ú
-T& operator[] (Rank r) const;//ÖØÔØÏÂ±ê²Ù×÷·û£¬¿ÉÒÔÀàËÆÓÚÊı×éĞÎÊ½µÄÒıÓÃ¸÷ÔªËØ
-Vector<T> & operator= (Vector<T> const&);//ÖØÔØ¸³Öµ²Ù×÷·û£¬ÒÔ±ãÖ±½Ó¿ËÂ¡ÏòÁ¿
+//å¯å†™è®¿é—®æ¥å£
+T& operator[] (Rank r) const;//é‡è½½ä¸‹æ ‡æ“ä½œç¬¦ï¼Œå¯ä»¥ç±»ä¼¼äºæ•°ç»„å½¢å¼çš„å¼•ç”¨å„å…ƒç´ 
+Vector<T> & operator= (Vector<T> const&);//é‡è½½èµ‹å€¼æ“ä½œç¬¦ï¼Œä»¥ä¾¿ç›´æ¥å…‹éš†å‘é‡
 T remove(Rank r);
 int remove(Rank lo,Rank hi);
 Rank insert(T const& e){return insert(_size,e);}
@@ -57,7 +57,7 @@ void unsort(){unsort(0,_size);}
 int deduplicate();
 int uniquify();
 
-//±éÀú
+//éå†
 void traverse( void(*)(T&));
 template<typename VST> void traverse(VST &);
 };
@@ -102,4 +102,21 @@ template<typename T> T& Vector<T>::operator[](Rank r)const
 template<typename T> void permute(Vector<T> &V){
     for(int i=V.size();i>0;i--)
     swap(V[i-1],V[rand()%i]);
+}
+
+template<typename T> void Vector<T>::unsort(Rank lo,Rank hi){
+    T* V = _elem + lo;
+    for(Rank i = hi-lo;i>0;i--){
+        swap(V[i-1],V[rank() % i]);
+    }
+}
+
+template<typename T> static bool lt(T *a,T *b){return lt(*a,*b);}
+template<typename T> static bool lt(T &a,T &b){return a<b;}
+template<typename T> static bool eq(T *a,T *b){return eq(*a,*b);}
+template<typename T> static bool eq(T &a,T &b){return a == b;}
+
+template<typename T>
+Rank Vector<T>::find(T const& e,Rank lo,Rank hi)const{
+    while( (lo<hi--) && (e != _elem[hi]) )
 }
